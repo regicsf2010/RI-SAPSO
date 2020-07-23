@@ -1,0 +1,16 @@
+function [ V ] = getVelocity( X, V, P, S, GB, I, params, dir)
+    
+    if(dir == 1)        
+        V = params.IW * V + dir * ( ...
+            I       * params.CC * rand * (P - X) + ...
+            I       * params.SC * rand * (GB.X - X) + ...
+            (I - 1) * params.GC * rand * S);
+    else
+        M1 = m_function(params);
+        M2 = m_function(params);
+        
+        V = params.IW * V + dir * ( ...
+            I       * params.SC * rand * (M1 * (GB.X - X)')' + ...
+            (I - 1) * params.GC * rand * (M2 * S')');        
+    end
+end
